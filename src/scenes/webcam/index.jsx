@@ -23,6 +23,7 @@ const WebcamView = () => {
     //evaluation
     const [evalArr, setEvalArr] = React.useState(null);
     const [evalValue, setEvalValue] = React.useState(-1);
+    const [loading, setLoading] = React.useState(false); // State for API call loading
 
     //Allows straight download without button click
     const isInitialMount = React.useRef(true);
@@ -95,9 +96,16 @@ const WebcamView = () => {
 
             //API call
             // Make API call to fetch evaluation data
+            setLoading(true);
             try {
-                const response = await axios.get(`http://localhost:5000/evaluateOK/5`);
-                console.log(response.data);
+                const response = await axios.get(`http://localhost:5000/evaluateOK/5`, {
+                    onDownloadProgress: progressEvent => {
+                        // Calculate progress percentage
+                        const progress = (progressEvent.loaded / progressEvent.total) * 100;
+                        console.log(progress);
+                    }
+                });
+                setLoading(false); // Stop loading                console.log(response.data);
 
                 if (response.data.Success) {
                     const data = response.data;

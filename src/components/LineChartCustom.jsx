@@ -61,7 +61,7 @@ const LineChartCustom = ({ data, isCustomLineColors = false, isDashboard = false
                 tickSize: 0,
                 tickPadding: 5,
                 tickRotation: 0,
-                legend: isDashboard ? undefined : "X Axis",
+                legend: isDashboard ? undefined : "Set of frames",
                 legendOffset: 36,
                 legendPosition: "middle",
             }}
@@ -71,7 +71,7 @@ const LineChartCustom = ({ data, isCustomLineColors = false, isDashboard = false
                 tickSize: 3,
                 tickPadding: 5,
                 tickRotation: 0,
-                legend: isDashboard ? undefined : "Y Axis",
+                legend: isDashboard ? undefined : "Engagement Level",
                 legendOffset: -40,
                 legendPosition: "middle",
             }}
