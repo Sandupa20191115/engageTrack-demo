@@ -13,7 +13,7 @@ import LineChart from "../../components/LineChart";
 import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
 
-const Dashboard = () => {
+const VideoUpload = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
@@ -21,7 +21,7 @@ const Dashboard = () => {
         <Box m="20px">
             {/* HEADER */}
             <Box display="flex" justifyContent="space-between" alignItems="center">
-                <Header title="Home" subtitle="Welcome to your dashboard" />
+                <Header title="Evaluate Uploaded Videos" subtitle="Welcome to your dashboard" />
 
                 <Box>
                     <Button
@@ -281,4 +281,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default VideoUpload;

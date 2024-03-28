@@ -10,6 +10,8 @@ import Line from "./scenes/line";
 import FAQ from "./scenes/faq";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
+import WebcamView from "./scenes/webcam";
+import VideoUpload from "./scenes/videoupload";
 // import Calendar from "./scenes/calendar/calendar";
 
 function App() {
@@ -27,7 +29,8 @@ function App() {
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/team" element={<Team />} />
-                {/*<Route path="/contacts" element={<Contacts />} />*/}
+                <Route path="/webcam" element={<WebcamView />} />
+                <Route path="/videoUpload" element={<VideoUpload />} />
                 {/*<Route path="/invoices" element={<Invoices />} />*/}
                 {/*<Route path="/form" element={<Form />} />*/}
                 {/*<Route path="/bar" element={<Bar />} />*/}
