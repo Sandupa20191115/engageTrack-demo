@@ -2,7 +2,7 @@ import { Button, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import React from "react";
 
-const CustomButton = ({ title, onClick , icon }) => {
+const CustomButton = ({ title, onClick , icon , disable=false,style}) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
@@ -22,7 +22,9 @@ const CustomButton = ({ title, onClick , icon }) => {
                 fontWeight: "bold",
                 padding: "10px 20px",
                 margin: "10px",
+                ...style
             }}
+            disabled={disable}
         >
             {icon && React.cloneElement(icon, { sx: { mr: "10px" } })}
             {title}

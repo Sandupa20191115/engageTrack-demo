@@ -81,6 +81,7 @@ const VideoUpload = () => {
                 const data = response.data;
                 openSnack("Video Successfully Evaluated", "success");
                 setEvalArr(data.data);
+                console.log(data.data);
                 setEvalValue(data.value);
             } else {
                 openSnack(response.data.Error + ", Please try again", "warning");

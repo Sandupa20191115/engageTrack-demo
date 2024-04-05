@@ -14,6 +14,7 @@ const WebcamView = () => {
     //webcam stuff
     const [capturing, setCapturing] = React.useState(false);
     const [recordedChunks, setRecordedChunks] = React.useState([]);
+    const [showWc, setShowWc] = React.useState(false);
 
     //snackbars
     const [open, setOpen] = React.useState(false);
@@ -167,7 +168,12 @@ const WebcamView = () => {
                     gridRow="span 3"
                 >
                     {/*<div>*/}
-                    <Webcam audio={false} ref={webcamRef} height={"100%"}/>
+                    {showWc ?
+                        <Webcam audio={false} ref={webcamRef} height={"100%"}/> :
+                        <CustomButton title={"Turn Webcam On"}
+                                      style={{backgroundColor : "green"}}
+                                      onClick={() => setShowWc(true)}/>
+                    }
                     {/*</div>*/}
                 </Box>
                 <Box
@@ -183,10 +189,18 @@ const WebcamView = () => {
                          alignItems="center"
                          justifyContent="center">
                         <CustomButton title={"Start Capturing"}
+                                      disable={!showWc}
                                       onClick={() => handleStartCaptureClick()}/>
 
                         <CustomButton title={"Stop Capturing and Evaluate"}
+                                      disable={!showWc}
                                       onClick={() => handleStopCaptureClick()}/>
+                        {
+                            showWc ?
+                            <CustomButton title={"Turn Webcam Off"}
+                                          style={{backgroundColor : "red"}}
+                                          onClick={() => setShowWc(false)}/> : ""
+                        }
                     </Box>
                 </Box>
 
