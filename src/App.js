@@ -12,11 +12,13 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import WebcamView from "./scenes/webcam";
 import VideoUpload from "./scenes/videoupload";
+import { useNavigate } from "react-router-dom";
 // import Calendar from "./scenes/calendar/calendar";
 
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
+
 
   return (
       <ColorModeContext.Provider value={colorMode}>

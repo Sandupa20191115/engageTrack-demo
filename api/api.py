@@ -26,7 +26,7 @@ def cls():
 
 def clearExtractingFrames():
     # Removing files from Extracted_frames
-    print("Clearning Extracted_frames")
+    print("Cleaning Extracted Frames")
     import os, shutil
     folder = "./Extracted Frames"
     for filename in os.listdir(folder):
@@ -38,7 +38,7 @@ def clearExtractingFrames():
                 shutil.rmtree(file_path)
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
-    print("Done Clearning Extracted_frames")
+    print("Done cleaning Extracted Frames")
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -48,10 +48,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 client = MongoClient("localhost",27017)
 db = client.fypProto
 
-users = db.users
-
-for user in users.find():
-    print(user)
+users = db.users #evalutations
 
 #loading ML Model
 print("Model load initiated")
@@ -61,12 +58,6 @@ print("Model load successful")
 @app.route("/status")
 @cross_origin()
 def get_status():
-    return {'status' : True}
-
-@app.route("/testDB_push/<id>")
-@cross_origin()
-def testDB_put(id):
-    users.insert_one({"id" : str(uuid.uuid4()) ,"name" : "sandu" ,"age" : id})
     return {'status' : True}
 
 @app.route("/getEvaluations", methods=['GET'])
@@ -80,31 +71,30 @@ def testDB_get():
 
     return {'users': user_objects}
 
-
 @app.route("/evaluate/<id>")
 @cross_origin()
-def evaluateWebcam(id,):
+def evaluateWebcam(id):
     cls()
     print("Hit with id of "+id)
-    # print("Hit with seq size of "+seqSize)
-    # print("Hit with frame no of "+frameNo)
-    
-    # return {"Success" : True}
-    
+
     response = {"Success" : False}
     
     clearExtractingFrames()
     
     #Extracting frames
     print("Extracting frames")
-    input_video_path=f"C:/Users/sandu/Documents/IIT/Year4/Projectv1/Impl/react-flask-proto/Video Captures/capture-{id}.avi"
-    extract_frames(input_video_path=input_video_path,output_folder_path="./Extracted_frames")    
+    input_video_path=f"C:/Users/sandu/Documents/IIT/Year4/Projectv1/Impl/yt-dashboard/Webcam Captures/{id}.avi"
+#     input_video_path=f"C:/Users/sandu/Documents/IIT/Year4/Projectv1/Impl/yt-dashboard/Webcam Captures/{id}"
+    print(input_video_path)
+#     return {"Success" : True}
+
+    #C:\Users\sandu\Documents\IIT\Year4\Projectv1\Impl\yt-dashboard\Webcam Captures\7a8c8588-c870-4ed9-83fd-1b563b42fe43.avi
+    extract_frames(input_video_path=input_video_path,output_folder_path="./Extracted Frames")
     print("Done Extracting frames")
     
     try:
-        testingPath = "C:/Users/sandu/Documents/IIT/Year4/Projectv1/Impl/react-flask-proto/api/Extracted_frames"
-        # testingPath = "C:/Users/sandu/Documents/IIT/Year4/Projectv1/Impl/react-flask-proto/Testing Videos/Boredom_556463022"
-    
+        testingPath = "C:/Users/sandu/Documents/IIT/Year4/Projectv1/Impl/yt-dashboard/api/Extracted Frames"
+
         frameNo = len(os.listdir(testingPath))
         seqSize = 5
         
@@ -112,23 +102,8 @@ def evaluateWebcam(id,):
         scores = evaluateFrame(model=model,testingPath=testingPath,noFrames=frameNo,sequenceSize=seqSize)
         print("Done prediction")
         
-        # Appening the new element to the json file
-        json_file_path = "../public/results.json"  # Absolute path to the JSON file
-        dummy_element = {
-            "id": "base ID",
-            "type": "webcam",
-            "score": 0.5,
-            "levels": scores.tolist()
-        }
-        
-        # Open the JSON file and append the dummy data
-        with open(json_file_path, 'r') as file:
-            data = json.load(file)
-            data.append(dummy_element)
-        
-        # Write back the updated data to the JSON file
-        with open(json_file_path, 'w') as file:
-            json.dump(data, file, indent=4)
+        users.insert_one({"id" : id ,"type" : "Capture" ,"scores" : scores.tolist()})
+        print("Saved to DB")
         
         response = jsonify({"Success" : True,"Error" : None , "data" : scores.tolist()})   
 
@@ -181,9 +156,8 @@ def fileUpload():
             print("Starting prediction")
             scores = evaluateFrame(model=model,testingPath=testingPath,noFrames=frameNo,sequenceSize=seqSize)
             print("Done prediction")
-            
-            # Appening the new element to the json file
-            users.insert_one({"id" : str(uuid.uuid4()) ,"type" : "upload" ,"scores" : scores.tolist()})
+
+            users.insert_one({"id" : str(uuid.uuid4()) ,"type" : "Upload" ,"scores" : scores.tolist()})
             print("Saved to DB")
 
             response = jsonify({"Success" : True,"Error" : None , "data" : scores.tolist()})
@@ -199,26 +173,6 @@ def fileUpload():
     else:
         response = {"Success" : False,"Error" : "Invalid file type" , "data" : None}
         return jsonify(response)
-
-
-@app.route("/evaluateOK/<id>")
-@cross_origin()
-def evaluateWebcamOK(id):
-    cls()    
-    length = np.random.choice([100, 200])
-
-    # Generate a 1D NumPy array with random values between 0 and 1
-    array_1d = np.random.rand(length)
-    
-    print(f"got hit with id {id}")
-    
-    time.sleep(3)
-    
-    if id=="5":
-        return jsonify({"Success" : True,"Error" : None , "data" : array_1d.tolist() , "value" : 0})   
-    else :
-        return jsonify({"Success" : False,"Error" : "Something Went Wrong" , "data" : None})   
-
 
 
 if __name__ == '__main__':

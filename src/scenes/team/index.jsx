@@ -1,5 +1,15 @@
-import {Box, useTheme} from "@mui/material";
-import {DataGrid} from "@mui/x-data-grid";
+import {
+    Box,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography,
+    useTheme
+} from "@mui/material";
 import {tokens} from "../../theme";
 import Header from "../../components/Header";
 import React, {useEffect, useState} from "react";
@@ -51,7 +61,10 @@ const Team = () => {
     const handleClose = () => setOpen(false);
 
     const columns = [
-        {field: "id", headerName: "ID"},
+        {
+            field: "id",
+            headerName: "ID"
+        },
         {
             field: "type",
             headerName: "Type",
@@ -59,14 +72,7 @@ const Team = () => {
         },
         {
             field: "scores",
-            headerName: "Score",
-            type: "number",
-            headerAlign: "left",
-            align: "left",
-        },
-        {
-            field: "levels",
-            headerName: "Levels",
+            headerName: "Options",
             flex: 1,
             renderCell: ({row}) => (
                 <Box>
@@ -83,32 +89,63 @@ const Team = () => {
         <Box m="20px">
             <Header title="Previous Evaluations"
                     subtitle="View previously evaluated focus levels"/>
-            <Box
-                sx={{
-                    "& .MuiDataGrid-root": {
-                        border: "none",
-                    },
-                    "& .MuiDataGrid-cell": {
-                        borderBottom: "none",
-                    },
-                    "& .MuiDataGrid-columnHeaders": {
-                        // backgroundColor: colors.blueAccent[700],
-                        borderBottom: "none",
-                    },
-                    "& .MuiDataGrid-virtualScroller": {
-                        backgroundColor: colors.primary[400],
-                    },
-                    "& .MuiDataGrid-footerContainer": {
-                        borderTop: "none",
-                        backgroundColor: colors.blueAccent[700],
-                    },
-                    "& .MuiCheckbox-root": {
-                        color: `${colors.greenAccent[200]} !important`,
-                    },
-                }}
-            >
-                <DataGrid checkboxSelection rows={data} columns={columns}/>
-            </Box>
+
+            <TableContainer component={Paper}  style={{ maxHeight: 600 }}>
+                <Table stickyHeader  aria-label="simple table">
+                    <TableHead style={{backgroundColor: "teal"}}>
+                        <TableRow>
+                            <TableCell style={{backgroundColor: "teal"}}>
+                                <Typography
+                                    variant="h4"
+                                    fontWeight="600"
+                                    color={colors.grey[100]}>
+                                    ID
+                                </Typography>
+                            </TableCell>
+                            <TableCell style={{backgroundColor: "teal"}}>
+                                <Typography
+                                    variant="h4"
+                                    fontWeight="600"
+                                    color={colors.grey[100]}
+                                >
+                                    Type
+                                </Typography>
+                            </TableCell>
+                            <TableCell align="right" sx={{ pr:7 }} style={{backgroundColor: "teal"}}>
+                                <Typography
+                                    variant="h4"
+                                    fontWeight="600"
+                                    color={colors.grey[100]}
+                                >
+                                    Actions
+                                </Typography>
+                            </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {data.map((row) => (
+                            <TableRow key={row.id}>
+                                <TableCell component="th" scope="row">
+                                    <Typography variant="h5">{row.id}</Typography>
+                                </TableCell>
+                                <TableCell>
+                                    <Typography variant="h5">{row.type}</Typography>
+                                </TableCell>
+                                <TableCell align="right">
+                                    <CustomButton
+                                        title={"Show Graph"}
+                                        onClick={() => {
+                                            setEvalArr(row.scores);
+                                            setOpen(true);
+                                        }}
+                                    />
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
             <Modal
                 open={open}
                 onClose={handleClose}

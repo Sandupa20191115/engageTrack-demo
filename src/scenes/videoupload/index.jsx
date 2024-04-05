@@ -207,6 +207,7 @@ const VideoUpload = () => {
                     justifyContent="center"
                     gridRow="span 2"
                 >
+
                     {src !== "" ? <video src={src} controls width={"85%"}>
                         Sorry, your browser doesn't support embedded videos.
                     </video> : <Typography

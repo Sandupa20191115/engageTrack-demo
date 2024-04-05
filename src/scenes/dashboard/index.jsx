@@ -12,16 +12,25 @@ import LineChart from "../../components/LineChart";
 // import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
+import CustomButton from "../../components/Button";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+    const navigate = useNavigate();
+
+    const handleClick = (route) => {
+        navigate(route);
+    };
 
     return (
         <Box m="20px">
             {/* HEADER */}
             <Box display="flex" justifyContent="space-between" alignItems="center">
-                <Header title="Home" subtitle="Welcome to your dashboard" />
+                <Header title="Student Focus Evaluation System"
+                        subtitle="Welcome" />
             </Box>
 
             {/* GRID & CHARTS */}
@@ -31,236 +40,111 @@ const Dashboard = () => {
                 gridAutoRows="140px"
                 gap="20px"
             >
-            {/*    /!* ROW 1 *!/*/}
-            {/*    <Box*/}
-            {/*        gridColumn="span 6"*/}
-            {/*        backgroundColor={colors.primary[400]}*/}
-            {/*        display="flex"*/}
-            {/*        alignItems="center"*/}
-            {/*        justifyContent="center"*/}
-            {/*    >*/}
-            {/*        <StatBox*/}
-            {/*            title="12,361"*/}
-            {/*            subtitle="Emails Sent"*/}
-            {/*            progress="0.75"*/}
-            {/*            increase="+14%"*/}
-            {/*            icon={*/}
-            {/*                <EmailIcon*/}
-            {/*                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}*/}
-            {/*                />*/}
-            {/*            }*/}
-            {/*        />*/}
-            {/*    </Box>*/}
-            {/*    /!*<Box*!/*/}
-            {/*    /!*    gridColumn="span 3"*!/*/}
-            {/*    /!*    backgroundColor={colors.primary[400]}*!/*/}
-            {/*    /!*    display="flex"*!/*/}
-            {/*    /!*    alignItems="center"*!/*/}
-            {/*    /!*    justifyContent="center"*!/*/}
-            {/*    /!*>*!/*/}
-            {/*    /!*    <StatBox*!/*/}
-            {/*    /!*        title="431,225"*!/*/}
-            {/*    /!*        subtitle="Sales Obtained"*!/*/}
-            {/*    /!*        progress="0.50"*!/*/}
-            {/*    /!*        increase="+21%"*!/*/}
-            {/*    /!*        icon={*!/*/}
-            {/*    /!*            <PointOfSaleIcon*!/*/}
-            {/*    /!*                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}*!/*/}
-            {/*    /!*            />*!/*/}
-            {/*    /!*        }*!/*/}
-            {/*    /!*    />*!/*/}
-            {/*    /!*</Box>*!/*/}
-            {/*    <Box*/}
-            {/*        gridColumn="span 3"*/}
-            {/*        backgroundColor={colors.primary[400]}*/}
-            {/*        display="flex"*/}
-            {/*        alignItems="center"*/}
-            {/*        justifyContent="center"*/}
-            {/*    >*/}
-            {/*        <StatBox*/}
-            {/*            title="32,441"*/}
-            {/*            subtitle="New Clients"*/}
-            {/*            progress="0.30"*/}
-            {/*            increase="+5%"*/}
-            {/*            icon={*/}
-            {/*                <PersonAddIcon*/}
-            {/*                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}*/}
-            {/*                />*/}
-            {/*            }*/}
-            {/*        />*/}
-            {/*    </Box>*/}
-            {/*    <Box*/}
-            {/*        gridColumn="span 3"*/}
-            {/*        backgroundColor={colors.primary[400]}*/}
-            {/*        display="flex"*/}
-            {/*        alignItems="center"*/}
-            {/*        justifyContent="center"*/}
-            {/*    >*/}
-            {/*        <StatBox*/}
-            {/*            title="1,325,134"*/}
-            {/*            subtitle="Traffic Received"*/}
-            {/*            progress="0.80"*/}
-            {/*            increase="+43%"*/}
-            {/*            icon={*/}
-            {/*                <TrafficIcon*/}
-            {/*                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}*/}
-            {/*                />*/}
-            {/*            }*/}
-            {/*        />*/}
-            {/*    </Box>*/}
 
-            {/*    /!* ROW 2 *!/*/}
-            {/*    <Box*/}
-            {/*        gridColumn="span 8"*/}
-            {/*        gridRow="span 2"*/}
-            {/*        backgroundColor={colors.primary[400]}*/}
-            {/*    >*/}
-            {/*        <Box*/}
-            {/*            mt="25px"*/}
-            {/*            p="0 30px"*/}
-            {/*            display="flex "*/}
-            {/*            justifyContent="space-between"*/}
-            {/*            alignItems="center"*/}
-            {/*        >*/}
-            {/*            <Box>*/}
-            {/*                <Typography*/}
-            {/*                    variant="h5"*/}
-            {/*                    fontWeight="600"*/}
-            {/*                    color={colors.grey[100]}*/}
-            {/*                >*/}
-            {/*                    Revenue Generated*/}
-            {/*                </Typography>*/}
-            {/*                <Typography*/}
-            {/*                    variant="h3"*/}
-            {/*                    fontWeight="bold"*/}
-            {/*                    color={colors.greenAccent[500]}*/}
-            {/*                >*/}
-            {/*                    $59,342.32*/}
-            {/*                </Typography>*/}
-            {/*            </Box>*/}
-            {/*            <Box>*/}
-            {/*                <IconButton>*/}
-            {/*                    <DownloadOutlinedIcon*/}
-            {/*                        sx={{ fontSize: "26px", color: colors.greenAccent[500] }}*/}
-            {/*                    />*/}
-            {/*                </IconButton>*/}
-            {/*            </Box>*/}
-            {/*        </Box>*/}
-            {/*        <Box height="250px" m="-20px 0 0 0">*/}
-            {/*            <LineChart isDashboard={true} />*/}
-            {/*        </Box>*/}
-            {/*    </Box>*/}
-            {/*    <Box*/}
-            {/*        gridColumn="span 4"*/}
-            {/*        gridRow="span 2"*/}
-            {/*        backgroundColor={colors.primary[400]}*/}
-            {/*        overflow="auto"*/}
-            {/*    >*/}
-            {/*        <Box*/}
-            {/*            display="flex"*/}
-            {/*            justifyContent="space-between"*/}
-            {/*            alignItems="center"*/}
-            {/*            borderBottom={`4px solid ${colors.primary[500]}`}*/}
-            {/*            colors={colors.grey[100]}*/}
-            {/*            p="15px"*/}
-            {/*        >*/}
-            {/*            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">*/}
-            {/*                Recent Transactions*/}
-            {/*            </Typography>*/}
-            {/*        </Box>*/}
-            {/*        {mockTransactions.map((transaction, i) => (*/}
-            {/*            <Box*/}
-            {/*                key={`${transaction.txId}-${i}`}*/}
-            {/*                display="flex"*/}
-            {/*                justifyContent="space-between"*/}
-            {/*                alignItems="center"*/}
-            {/*                borderBottom={`4px solid ${colors.primary[500]}`}*/}
-            {/*                p="15px"*/}
-            {/*            >*/}
-            {/*                <Box>*/}
-            {/*                    <Typography*/}
-            {/*                        color={colors.greenAccent[500]}*/}
-            {/*                        variant="h5"*/}
-            {/*                        fontWeight="600"*/}
-            {/*                    >*/}
-            {/*                        {transaction.txId}*/}
-            {/*                    </Typography>*/}
-            {/*                    <Typography color={colors.grey[100]}>*/}
-            {/*                        {transaction.user}*/}
-            {/*                    </Typography>*/}
-            {/*                </Box>*/}
-            {/*                <Box color={colors.grey[100]}>{transaction.date}</Box>*/}
-            {/*                <Box*/}
-            {/*                    backgroundColor={colors.greenAccent[500]}*/}
-            {/*                    p="5px 10px"*/}
-            {/*                    borderRadius="4px"*/}
-            {/*                >*/}
-            {/*                    ${transaction.cost}*/}
-            {/*                </Box>*/}
-            {/*            </Box>*/}
-            {/*        ))}*/}
-            {/*    </Box>*/}
+                {/* ROW 3 */}
+                <Box
+                    gridColumn="span 6"
+                    gridRow="span 2"
+                    backgroundColor={colors.primary[400]}
+                    p="30px"
+                >
+                    <Typography variant="h3" fontWeight="600">
+                        Problem
+                    </Typography>
+                    <Box
+                        display="flex"
+                        flexDirection="column"
+                        // alignItems="center"
+                        mt="15px"
+                    >
+                        <Typography variant="h4"  color={colors.primary[100]} align={"justify"}>
+                            The main issue identified in a virtual classroom is the teachers inability to accurately evaluate student focus level.
+                            This problem has converted online classrooms into a feeble place. This is very easy in a physical classroom and is very tedious or impossible in a virtual classroom due to the number
+                            of students that are shown in a single screen or teachers sharing through slides and not being able to see the students at all.
+                        </Typography>
+                    </Box>
+                </Box>
 
-            {/*    /!* ROW 3 *!/*/}
-            {/*    <Box*/}
-            {/*        gridColumn="span 4"*/}
-            {/*        gridRow="span 2"*/}
-            {/*        backgroundColor={colors.primary[400]}*/}
-            {/*        p="30px"*/}
-            {/*    >*/}
-            {/*        <Typography variant="h5" fontWeight="600">*/}
-            {/*            Campaign*/}
-            {/*        </Typography>*/}
-            {/*        <Box*/}
-            {/*            display="flex"*/}
-            {/*            flexDirection="column"*/}
-            {/*            alignItems="center"*/}
-            {/*            mt="25px"*/}
-            {/*        >*/}
-            {/*            <ProgressCircle size="125" />*/}
-            {/*            <Typography*/}
-            {/*                variant="h5"*/}
-            {/*                color={colors.greenAccent[500]}*/}
-            {/*                sx={{ mt: "15px" }}*/}
-            {/*            >*/}
-            {/*                $48,352 revenue generated*/}
-            {/*            </Typography>*/}
-            {/*            <Typography>Includes extra misc expenditures and costs</Typography>*/}
-            {/*        </Box>*/}
-            {/*    </Box>*/}
-            {/*    <Box*/}
-            {/*        gridColumn="span 4"*/}
-            {/*        gridRow="span 2"*/}
-            {/*        backgroundColor={colors.primary[400]}*/}
-            {/*    >*/}
-            {/*        <Typography*/}
-            {/*            variant="h5"*/}
-            {/*            fontWeight="600"*/}
-            {/*            sx={{ padding: "30px 30px 0 30px" }}*/}
-            {/*        >*/}
-            {/*            Sales Quantity*/}
-            {/*        </Typography>*/}
-            {/*        <Box height="250px" mt="-20px">*/}
-            {/*            /!*<BarChart isDashboard={true} />*!/*/}
-            {/*        </Box>*/}
-            {/*    </Box>*/}
-            {/*    <Box*/}
-            {/*        gridColumn="span 4"*/}
-            {/*        gridRow="span 2"*/}
-            {/*        backgroundColor={colors.primary[400]}*/}
-            {/*        padding="30px"*/}
-            {/*    >*/}
-            {/*        <Typography*/}
-            {/*            variant="h5"*/}
-            {/*            fontWeight="600"*/}
-            {/*            sx={{ marginBottom: "15px" }}*/}
-            {/*        >*/}
-            {/*            Geography Based Traffic*/}
-            {/*        </Typography>*/}
-            {/*        <Box height="200px">*/}
-            {/*            /!*<GeographyChart isDashboard={true} />*!/*/}
-            {/*        </Box>*/}
-            {/*    </Box>*/}
+                <Box
+                    gridColumn="span 6"
+                    gridRow="span 2"
+                    backgroundColor={colors.primary[400]}
+                    p="30px"
+                >
+                    <Typography variant="h3" fontWeight="600">
+                        Solution
+                    </Typography>
+                    <Box
+                        display="flex"
+                        flexDirection="column"
+                        // alignItems="center"
+                        mt="15px"
+                    >
+                        <Typography variant="h4"  color={colors.primary[100]} align={"justify"}>
+                            This system uses Computer Vision techniques to evaluate focus levels of a student
+                            from a video. Goal is to test the performance and accuracy of a focus evaluation model and use the model
+                            in an integrable tool for a virtual classroom platform.
+                            By showing focus evaluations to a teacher in classroom, the teacher can dynamically shift the teaching process to keep more students engaged just like a real classoom.
+                        </Typography>
+                    </Box>
+                </Box>
+
+                <Box
+                    gridColumn="span 12"
+                    gridRow="span 3"
+                    backgroundColor={colors.primary[400]}
+                    p="30px"
+                >
+                    <Typography variant="h3" fontWeight="600">
+                        How it works
+                    </Typography>
+                    <Box
+                        display="flex"
+                        flexDirection="row"
+                        alignItems="center"
+                        justifyContent={"center"}
+                        mt="15px"
+                    >
+                        <Box
+                            component="img"
+                            sx={{
+                                // height: "25%",
+                                width: "50%",
+                                // maxHeight: { xs: 233, md: 167 },
+                                // maxWidth: { xs: 350, md: 250 },
+                            }}
+                            alt="The house from the offer."
+                            src="./assets/flow.png"
+                        />
+                        <Typography variant="h4" ml={5}  color={colors.primary[100]} align={"justify"}>
+                            System uses a hybrid model,
+                                <li>A Spatio Temporal Convolutional Autoencoder</li>
+                                <li>Pose evaluator</li>
+                        </Typography>
+                    </Box>
+                </Box>
+
+                <Box
+                    gridColumn="span 12"
+                    gridRow="span 1"
+                    backgroundColor={colors.primary[400]}
+                    p="30px"
+                >
+                    <Typography variant="h3" fontWeight="600">
+                        Try it out
+                    </Typography>
+                    <Box
+                        display="flex"
+                        flexDirection="row"
+                        alignItems="center"
+                        justifyContent={"center"}
+                        // mt="15px"
+                    >
+                        <CustomButton title={"Evaluate using Webcam Capture"} onClick={() => handleClick("/webcam")}/>
+                        <CustomButton title={"Evaluate using Upload Video"} onClick={() => handleClick("/videoUpload")}/>
+                    </Box>
+                </Box>
+
             </Box>
         </Box>
     );

@@ -38,7 +38,7 @@ def extract_frames(input_video_path, output_folder_path):
     return success
     
 # if __name__ == "__main__":
-#     input_video_path = "C:/Users/sandu/Documents/IIT/Year4/Projectv1/Impl/react-flask-proto/public/Video Captures/capture-edb3220d-9a93-4d12-9dfd-91962f27842b.avi"
-#     output_folder_path = "C:/Users/sandu/Documents/IIT/Year4/Projectv1/Impl/react-flask-proto/api/Extracted_frames"
+#     input_video_path = "C:/Users/sandu/Documents/IIT/Year4/Projectv1/Impl/yt-dashboard/Webcam Captures/db917fd7-c670-40a0-8623-89230f314113.avi"
+#     output_folder_path = "C:/Users/sandu/Documents/IIT/Year4/Projectv1/Impl/yt-dashboard/api/Extracted Frames"
 #
 #     extract_frames(input_video_path, output_folder_path)

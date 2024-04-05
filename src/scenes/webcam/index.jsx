@@ -8,6 +8,13 @@ import Webcam from "react-webcam";
 import React from "react";
 import axios from "axios";
 import LineChartCustom from "../../components/LineChartCustom";
+import { v4 as uuidv4 } from 'uuid';
+
+function callApi(id) {
+    return fetch('http://localhost:5000/evaluate/' + id, { method: 'GET' })
+        .then(data => data.json()) // Parsing the data into a JavaScript object
+    // .then(json => console.log(json)) // Displaying the stringified data in an alert popup
+}
 
 const WebcamView = () => {
 
@@ -76,6 +83,9 @@ const WebcamView = () => {
     }, [mediaRecorderRef, webcamRef, setCapturing]);
 
     const handleDownload = React.useCallback(async () => {
+        return
+        //new uuid
+        const id = uuidv4();
 
         if (recordedChunks.length) {
             const blob = new Blob(recordedChunks, {
@@ -90,7 +100,8 @@ const WebcamView = () => {
             document.body.appendChild(a);
             a.style = "display: none";
             a.href = url;
-            a.download = "capture-" + 534 + ".avi";
+            const fileName = String(id+".avi")
+            a.download = fileName;
             a.click();
             window.URL.revokeObjectURL(url);
             setRecordedChunks([]);
@@ -98,28 +109,44 @@ const WebcamView = () => {
             //API call
             // Make API call to fetch evaluation data
             setLoading(true);
-            try {
-                const response = await axios.get(`http://localhost:5000/evaluateOK/5`, {
-                    onDownloadProgress: progressEvent => {
-                        // Calculate progress percentage
-                        const progress = (progressEvent.loaded / progressEvent.total) * 100;
-                        console.log(progress);
-                    }
-                });
-                setLoading(false); // Stop loading                console.log(response.data);
+            console.log(`file name is ${fileName} is of type ${typeof fileName}`)
+            const endpoint = String("http://localhost:5000/evaluate/" + fileName)
+            console.log(`endpoint is ${endpoint} is of type ${typeof endpoint}`)
 
-                if (response.data.Success) {
-                    const data = response.data;
-                    openSnack("Video Successfully Evaluated", "success");
-                    setEvalArr(data.data);
-                    setEvalValue(data.value);
-                } else {
-                    openSnack(response.data.Error + ", Please try again", "warning");
-                }
+            try {
+                const apiResponse = await callApi(id);
+
+                console.log(apiResponse)
+                // if (apiResponse.Success) {
+                //     openSnack("Video Successfully Evaluated", "success")
+                    // setarrz(generateArrayFrom1ToN(apiResponse.data.length))
+                    // setChartArr(apiResponse.data)
+                // }
+                // else {
+                //     openSnack(apiResponse.Error + ", Please try again", "warning")
+                // }
+
             } catch (error) {
-                console.log(error);
-                openSnack("API Call Failed" + ", Please try again", "error");
+                openSnack("Unknown Error Occured" + "Please try again", "error")
             }
+
+
+            // try {
+            //     const response = await axios.get(endpoint);
+            //     setLoading(false); // Stop loading                console.log(response.data);
+            //
+            //     if (response.data.Success) {
+            //         const data = response.data;
+            //         openSnack("Video Successfully Evaluated", "success");
+            //         setEvalArr(data.data);
+            //         setEvalValue(data.value);
+            //     } else {
+            //         openSnack(response.data.Error + ", Please try again", "warning");
+            //     }
+            // } catch (error) {
+            //     console.log(error);
+            //     openSnack("API Call Failed" + ", Please try again", "error");
+            // }
 
         }
 
@@ -186,10 +213,12 @@ const WebcamView = () => {
                 >
 
                     <Box display="flex"
+                         flexDirection={"column"}
                          alignItems="center"
                          justifyContent="center">
+
                         <CustomButton title={"Start Capturing"}
-                                      disable={!showWc}
+                                      disable={!showWc || capturing}
                                       onClick={() => handleStartCaptureClick()}/>
 
                         <CustomButton title={"Stop Capturing and Evaluate"}
@@ -198,6 +227,7 @@ const WebcamView = () => {
                         {
                             showWc ?
                             <CustomButton title={"Turn Webcam Off"}
+                                          disable={capturing}
                                           style={{backgroundColor : "red"}}
                                           onClick={() => setShowWc(false)}/> : ""
                         }
