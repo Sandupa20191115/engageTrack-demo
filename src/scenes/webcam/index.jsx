@@ -83,7 +83,7 @@ const WebcamView = () => {
     }, [mediaRecorderRef, webcamRef, setCapturing]);
 
     const handleDownload = React.useCallback(async () => {
-        return
+        // return
         //new uuid
         const id = uuidv4();
 
@@ -117,14 +117,13 @@ const WebcamView = () => {
                 const apiResponse = await callApi(id);
 
                 console.log(apiResponse)
-                // if (apiResponse.Success) {
-                //     openSnack("Video Successfully Evaluated", "success")
-                    // setarrz(generateArrayFrom1ToN(apiResponse.data.length))
-                    // setChartArr(apiResponse.data)
-                // }
-                // else {
-                //     openSnack(apiResponse.Error + ", Please try again", "warning")
-                // }
+                if (apiResponse.Success) {
+                    openSnack("Video Successfully Evaluated", "success")
+                    setEvalArr(apiResponse.data)
+                }
+                else {
+                    openSnack(apiResponse.Error + ", Please try again", "warning")
+                }
 
             } catch (error) {
                 openSnack("Unknown Error Occured" + "Please try again", "error")
