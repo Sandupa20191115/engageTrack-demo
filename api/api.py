@@ -81,6 +81,7 @@ def testDB_get():
 @app.route("/evaluate/<id>")
 @cross_origin()
 def evaluateWebcam(id):
+    print("EVALUATING WEBCAM VIDEO")
     cls()
     print("Hit with id of " + id)
 
@@ -106,7 +107,10 @@ def evaluateWebcam(id):
         seqSize = 5
 
         print("Starting prediction")
-        scores = evaluateFrame(model=model, testingPath=testingPath, noFrames=frameNo, sequenceSize=seqSize)
+        # scores = evaluateFrame(model=model, testingPath=testingPath, noFrames=frameNo, sequenceSize=seqSize)
+
+        scores = evaluate(testingPath, model, frameNo, 5, True)
+
         print("Done prediction")
 
         users.insert_one({"id": id, "type": "Capture", "scores": scores.tolist()})
@@ -123,7 +127,7 @@ def evaluateWebcam(id):
 
 UPLOAD_FOLDER = os.path.abspath(os.path.dirname(__file__)) + '/Downloads/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif',
-                          'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'csv', 'zip', 'rar', 'mp4',
+                          'd    oc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'csv', 'zip', 'rar', 'mp4',
                           'mp3', 'wav', 'avi', 'mkv', 'flv', 'mov', 'wmv', 'webm'])
 
 
@@ -135,6 +139,7 @@ def allowedFile(filename):
 @app.route('/upload', methods=['POST', 'GET'])
 @cross_origin()
 def fileUpload():
+    print("EVALUATING UPLOADED VIDEO")
     cls()
     response = {"Success": False, "Error": "Something went wrong", "data": None}
 

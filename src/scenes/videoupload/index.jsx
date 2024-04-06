@@ -62,6 +62,7 @@ const VideoUpload = () => {
     };
 
     const handleUploadFile = async (ev) => {
+        setLoading(true);
         // ev.preventDefault();
 
         // setisUploading(true);
@@ -83,11 +84,14 @@ const VideoUpload = () => {
                 setEvalArr(data.data);
                 console.log(data.data);
                 setEvalValue(data.value);
+                setLoading(false);
             } else {
                 openSnack(response.data.Error + ", Please try again", "warning");
+                setLoading(false);
             }
         } catch (error) {
-            openSnack("Unknown Error Occured" + " Please try again", "error")
+            openSnack("Unknown Error Occurred" + " Please try again", "error")
+            setLoading(false);
         }
     };
 
@@ -187,12 +191,14 @@ const VideoUpload = () => {
 
                         <CustomButton
                             title={"Evaluate"}
+                            disable={src === ""}
                             onClick={() => handleUploadFile()}/>
 
                         <CustomButton title={"Clear"}
-                             onClick={() => {
-                                 setSrc("");
-                             }}/>
+                                      disable={loading || src === ""}
+                                      onClick={() => {
+                                          setSrc("");
+                                      }}/>
                     </Box>
                 </Box>
 
