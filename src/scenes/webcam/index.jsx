@@ -6,12 +6,11 @@ import Header from "../../components/Header";
 import CustomButton from "../../components/Button";
 import Webcam from "react-webcam";
 import React from "react";
-import axios from "axios";
 import LineChartCustom from "../../components/LineChartCustom";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 
 function callApi(id) {
-    return fetch('http://localhost:5000/evaluate/' + id, { method: 'GET' })
+    return fetch('http://localhost:5000/evaluate/' + id, {method: 'GET'})
         .then(data => data.json()) // Parsing the data into a JavaScript object
     // .then(json => console.log(json)) // Displaying the stringified data in an alert popup
 }
@@ -29,7 +28,7 @@ const WebcamView = () => {
     const [severity, setSeverity] = React.useState("success");
 
     //evaluation
-    const [evalArr, setEvalArr] = React.useState(null);
+    const [evalArr, setEvalArr] = React.useState(Array.from({ length: 50 }, () => Math.random()));
     const [evalValue, setEvalValue] = React.useState(-1);
     const [loading, setLoading] = React.useState(false); // State for API call loading
 
@@ -77,6 +76,7 @@ const WebcamView = () => {
 
     const handleStopCaptureClick = React.useCallback(() => {
         // setShowWebcam(false);
+        setLoading(true);
         mediaRecorderRef.current.stop();
         setCapturing(false);
 
@@ -100,7 +100,7 @@ const WebcamView = () => {
             document.body.appendChild(a);
             a.style = "display: none";
             a.href = url;
-            const fileName = String(id+".avi")
+            const fileName = String(id + ".avi")
             a.download = fileName;
             a.click();
             window.URL.revokeObjectURL(url);
@@ -120,33 +120,15 @@ const WebcamView = () => {
                 if (apiResponse.Success) {
                     openSnack("Video Successfully Evaluated", "success")
                     setEvalArr(apiResponse.data)
-                }
-                else {
+                } else {
                     openSnack(apiResponse.Error + ", Please try again", "warning")
                 }
 
             } catch (error) {
-                openSnack("Unknown Error Occured" + "Please try again", "error")
+                openSnack("Unknown Error Occurred" + "Please try again", "error")
             }
 
-
-            // try {
-            //     const response = await axios.get(endpoint);
-            //     setLoading(false); // Stop loading                console.log(response.data);
-            //
-            //     if (response.data.Success) {
-            //         const data = response.data;
-            //         openSnack("Video Successfully Evaluated", "success");
-            //         setEvalArr(data.data);
-            //         setEvalValue(data.value);
-            //     } else {
-            //         openSnack(response.data.Error + ", Please try again", "warning");
-            //     }
-            // } catch (error) {
-            //     console.log(error);
-            //     openSnack("API Call Failed" + ", Please try again", "error");
-            // }
-
+            setLoading(false);
         }
 
     }, [recordedChunks]);
@@ -191,13 +173,13 @@ const WebcamView = () => {
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
-                    gridRow="span 3"
+                    gridRow="span 2"
                 >
                     {/*<div>*/}
                     {showWc ?
                         <Webcam audio={false} ref={webcamRef} height={"100%"}/> :
                         <CustomButton title={"Turn Webcam On"}
-                                      style={{backgroundColor : "green"}}
+                                      style={{backgroundColor: "green"}}
                                       onClick={() => setShowWc(true)}/>
                     }
                     {/*</div>*/}
@@ -208,7 +190,7 @@ const WebcamView = () => {
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
-                    gridRow="span 3"
+                    gridRow="span 2"
                 >
 
                     <Box display="flex"
@@ -216,19 +198,27 @@ const WebcamView = () => {
                          alignItems="center"
                          justifyContent="center">
 
-                        <CustomButton title={"Start Capturing"}
-                                      disable={!showWc || capturing}
-                                      onClick={() => handleStartCaptureClick()}/>
-
-                        <CustomButton title={"Stop Capturing and Evaluate"}
-                                      disable={!showWc}
-                                      onClick={() => handleStopCaptureClick()}/>
                         {
-                            showWc ?
-                            <CustomButton title={"Turn Webcam Off"}
-                                          disable={capturing}
-                                          style={{backgroundColor : "red"}}
-                                          onClick={() => setShowWc(false)}/> : ""
+                            loading ?
+                                <img src="./assets/vZjPLPGDTo.gif" alt="loader"
+                                     style={{width: 50, height: 50}}/> :
+                                <>
+                                    <CustomButton title={"Start Capturing"}
+                                                  disable={!showWc || capturing}
+                                                  onClick={() => handleStartCaptureClick()}/>
+
+                                    <CustomButton title={"Stop Capturing and Evaluate"}
+                                                  disable={!showWc}
+                                                  onClick={() => handleStopCaptureClick()}/>
+                                    {
+                                        showWc ?
+                                            <CustomButton title={"Turn Webcam Off"}
+                                                          disable={capturing}
+                                                          style={{backgroundColor: "red"}}
+                                                          onClick={() => setShowWc(false)}/> : ""
+                                    }
+                                </>
+
                         }
                     </Box>
                 </Box>
@@ -284,7 +274,7 @@ const WebcamView = () => {
                                 Evaluation graph will appear here
                             </Typography>
                         </Box>
-                        : <Box height="250px" m="-20px 0 0 0">
+                        : <Box height="250px" m="-0px 0 0 40px">
                             {/*<LineChart isDashboard={true}/>*/}
                             <LineChartCustom
                                 isCustomLineColors={true}

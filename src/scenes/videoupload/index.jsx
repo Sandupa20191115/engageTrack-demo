@@ -20,7 +20,7 @@ const VideoUpload = () => {
     const [severity, setSeverity] = React.useState("success");
 
     //evaluation
-    const [evalArr, setEvalArr] = React.useState(null);
+    const [evalArr, setEvalArr] = React.useState(Array.from({ length: 50 }, () => Math.random())); //null
     const [evalValue, setEvalValue] = React.useState(-1);
     const [loading, setLoading] = React.useState(false); // State for API call loading
 
@@ -189,16 +189,22 @@ const VideoUpload = () => {
                          alignItems="center"
                          justifyContent="center">
 
-                        <CustomButton
-                            title={"Evaluate"}
-                            disable={src === ""}
-                            onClick={() => handleUploadFile()}/>
+                        {loading ?
+                            <img src="./assets/vZjPLPGDTo.gif" alt="loader"
+                                 style={{width: 50, height: 50}}/> :
+                            <>
+                                <CustomButton
+                                    title={"Evaluate"}
+                                    disable={src === ""}
+                                    onClick={() => handleUploadFile()}/>
 
-                        <CustomButton title={"Clear"}
-                                      disable={loading || src === ""}
-                                      onClick={() => {
-                                          setSrc("");
-                                      }}/>
+                                <CustomButton title={"Clear"}
+                                              disable={loading || src === ""}
+                                              onClick={() => {
+                                                  setSrc("");
+                                              }}/>
+                            </>
+                        }
                     </Box>
                 </Box>
 
@@ -214,7 +220,7 @@ const VideoUpload = () => {
                     gridRow="span 2"
                 >
 
-                    {src !== "" ? <video src={src} controls width={"85%"}>
+                    {src !== "" ? <video src={src} controls height={"100%"} style={{margin:"30 50"}}>
                         Sorry, your browser doesn't support embedded videos.
                     </video> : <Typography
                         variant="h5"
@@ -262,10 +268,12 @@ const VideoUpload = () => {
                         }
 
                     </Box>
+
                     {evalArr === null
                         ? <Box display="flex"
                                alignItems="center"
-                               justifyContent="center">
+                               justifyContent="center"
+                                >
                             <Typography
                                 variant="h4"
                                 color={colors.grey[500]}
@@ -274,7 +282,7 @@ const VideoUpload = () => {
                                 Evaluation graph will appear here
                             </Typography>
                         </Box>
-                        : <Box height="250px" m="-20px 0 0 0">
+                        : <Box height="250px" sx={{pl:5,pt:-1}}>
                             {/*<LineChart isDashboard={true}/>*/}
                             <LineChartCustom
                                 isCustomLineColors={true}

@@ -1,7 +1,16 @@
 import React from "react";
-import { ResponsiveLine } from "@nivo/line";
-import { useTheme } from "@mui/material";
-import { tokens } from "../theme";
+import {ResponsiveLine} from "@nivo/line";
+import {Typography, useTheme} from "@mui/material";
+import {tokens} from "../theme";
+
+const calculateTickValues = (data) => {
+    const maxTicks = 5; // Maximum number of ticks you want to display
+    const interval = Math.ceil(data.length / maxTicks); // Calculate interval
+    return data.reduce((acc, _, index) => {
+        if (index % interval === 0) acc.push(index); // Add tick value every 'interval' data points
+        return acc;
+    }, []);
+};
 
 const LineChartCustom = ({ data, isCustomLineColors = false, isDashboard = false }) => {
     const theme = useTheme();
@@ -11,7 +20,7 @@ const LineChartCustom = ({ data, isCustomLineColors = false, isDashboard = false
     const chartData = [
         {
             id: "line",
-            color: isCustomLineColors ? colors.primary[500] : undefined,
+            color: colors.greenAccent[500],
             data: data.map((value, index) => ({ x: index, y: value })),
         },
     ];
@@ -29,6 +38,8 @@ const LineChartCustom = ({ data, isCustomLineColors = false, isDashboard = false
                     legend: {
                         text: {
                             fill: colors.grey[100],
+                            fontSize: "125%",
+                            marginBottom: 10
                         },
                     },
                     ticks: {
@@ -38,32 +49,34 @@ const LineChartCustom = ({ data, isCustomLineColors = false, isDashboard = false
                         },
                         text: {
                             fill: colors.grey[100],
+                            fontSize: "125%",
                         },
                     },
                 },
                 legends: {
                     text: {
-                        fill: colors.grey[100],
+                        fill: colors.greenAccent[100],
                     },
                 },
                 tooltip: {
                     container: {
-                        color: colors.primary[500],
+                        color: colors.greenAccent[500],
                     },
                 },
             }}
-            margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+            margin={{ top: 50, right: 110, bottom: 60, left: 70 }}
             xScale={{ type: "point" }}
-            yScale={{ type: "linear", min: 0, max: 1, stacked: false, reverse: false }}
+            yScale={{ type: "linear", min: 0, max: 1, stacked: false, reverse: false ,clamp:true}}
             yFormat=" >-.2f"
             axisBottom={{
                 orient: "bottom",
                 tickSize: 0,
                 tickPadding: 5,
                 tickRotation: 0,
-                legend: isDashboard ? undefined : "Set of frames",
-                legendOffset: 36,
+                legend: isDashboard ? undefined : "Set of Frames",
+                legendOffset: data === [] ? 25 : 35,
                 legendPosition: "middle",
+                tickValues : calculateTickValues(data),
             }}
             axisLeft={{
                 orient: "left",
@@ -72,17 +85,13 @@ const LineChartCustom = ({ data, isCustomLineColors = false, isDashboard = false
                 tickPadding: 5,
                 tickRotation: 0,
                 legend: isDashboard ? undefined : "Engagement Level",
-                legendOffset: -40,
+                legendOffset: -60,
                 legendPosition: "middle",
             }}
             enableGridX={false}
             enableGridY={false}
-            pointSize={8}
-            pointColor={{ theme: "background" }}
-            pointBorderWidth={2}
-            pointBorderColor={{ from: "serieColor" }}
-            pointLabelYOffset={-12}
-            useMesh={true}
+            enablePoints={false}
+            // useMesh={true}
             legends={[
                 {
                     anchor: "bottom-right",
@@ -95,7 +104,7 @@ const LineChartCustom = ({ data, isCustomLineColors = false, isDashboard = false
                     itemWidth: 80,
                     itemHeight: 20,
                     itemOpacity: 0.75,
-                    symbolSize: 12,
+                    symbolSize: 15,
                     symbolShape: "circle",
                     symbolBorderColor: "rgba(0, 0, 0, .5)",
                     effects: [
@@ -107,6 +116,12 @@ const LineChartCustom = ({ data, isCustomLineColors = false, isDashboard = false
                             },
                         },
                     ],
+                    itemTextColor: colors.grey[500], // Set text color
+                    itemComponent: ({ text }) => (
+                        <Typography variant="h4" color={colors.grey[500]}>
+                            {text}
+                        </Typography>
+                    ),
                 },
             ]}
         />

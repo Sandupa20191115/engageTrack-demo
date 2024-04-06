@@ -1,5 +1,6 @@
 import {
     Box,
+    IconButton,
     Paper,
     Table,
     TableBody,
@@ -16,6 +17,7 @@ import React, {useEffect, useState} from "react";
 import CustomButton from "../../components/Button";
 import LineChartCustom from "../../components/LineChartCustom";
 import Modal from "@mui/material/Modal";
+import CloseIcon from '@mui/icons-material/Close';
 
 const Team = () => {
     const theme = useTheme();
@@ -90,8 +92,8 @@ const Team = () => {
             <Header title="Previous Evaluations"
                     subtitle="View previously evaluated focus levels"/>
 
-            <TableContainer component={Paper}  style={{ maxHeight: 600 }}>
-                <Table stickyHeader  aria-label="simple table">
+            <TableContainer component={Paper} style={{maxHeight: 600}}>
+                <Table stickyHeader aria-label="simple table">
                     <TableHead style={{backgroundColor: "teal"}}>
                         <TableRow>
                             <TableCell style={{backgroundColor: "teal"}}>
@@ -111,7 +113,7 @@ const Team = () => {
                                     Type
                                 </Typography>
                             </TableCell>
-                            <TableCell align="right" sx={{ pr:7 }} style={{backgroundColor: "teal"}}>
+                            <TableCell align="right" sx={{pr: 7}} style={{backgroundColor: "teal"}}>
                                 <Typography
                                     variant="h4"
                                     fontWeight="600"
@@ -123,8 +125,8 @@ const Team = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map((row) => (
-                            <TableRow key={row.id}>
+                        {data.map((row, index) => (
+                            <TableRow key={index}>
                                 <TableCell component="th" scope="row">
                                     <Typography variant="h5">{row.id}</Typography>
                                 </TableCell>
@@ -157,14 +159,40 @@ const Team = () => {
                     top: "50%",
                     transform: "translate(-50%, -50%)",
                     width: "60%",
-                    height: "250px"
+                    // height: "300px",
+                    padding: "10px",
                 }} backgroundColor={colors.primary[400]}
                 >
-                    <Box height="250px" m="-20px 0 0 0">
+                    <Box
+                        display={"flex"}
+                        flexDirection={"row"}
+                        justifyContent={"space-between"}
+                        alignItems={"center"}
+                    >
+                        <Typography
+                            variant="h3"
+                            fontWeight="600"
+                            color={colors.grey[100]}
+                            sx={{ml: 2, mt: 2}}
+                        >
+                            Evaluation for the selected video
+                        </Typography>
+                        <IconButton onClick={() => handleClose()} sx={{mr: 2, mt: 2}}>
+                            <CloseIcon fontSize={"large"}/>
+                        </IconButton>
+                    </Box>
+                    <Box height="350px" sx={{pl: 2, pt: -1}}>
+                        {/*<LineChart isDashboard={true}/>*/}
                         <LineChartCustom
                             isCustomLineColors={true}
                             data={evalArr}/>
                     </Box>
+
+                    {/*<Box height="250px" m="-20px 0 0 0">*/}
+                    {/*    <LineChartCustom*/}
+                    {/*        isCustomLineColors={true}*/}
+                    {/*        data={evalArr}/>*/}
+                    {/*</Box>*/}
                 </Box>
             </Modal>
 
