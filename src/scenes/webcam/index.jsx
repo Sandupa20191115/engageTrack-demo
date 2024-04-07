@@ -28,7 +28,7 @@ const WebcamView = () => {
     const [severity, setSeverity] = React.useState("success");
 
     //evaluation
-    const [evalArr, setEvalArr] = React.useState(Array.from({ length: 50 }, () => Math.random()));
+    const [evalArr, setEvalArr] = React.useState(null);
     const [evalValue, setEvalValue] = React.useState(-1);
     const [loading, setLoading] = React.useState(false); // State for API call loading
 

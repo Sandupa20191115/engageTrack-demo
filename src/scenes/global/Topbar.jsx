@@ -32,15 +32,15 @@ const Topbar = () => {
                         <LightModeOutlinedIcon />
                     )}
                 </IconButton>
-                <IconButton>
-                    <NotificationsOutlinedIcon />
-                </IconButton>
-                <IconButton>
-                    <SettingsOutlinedIcon />
-                </IconButton>
-                <IconButton>
-                    <PersonOutlinedIcon />
-                </IconButton>
+                {/*<IconButton>*/}
+                {/*    <NotificationsOutlinedIcon />*/}
+                {/*</IconButton>*/}
+                {/*<IconButton>*/}
+                {/*    <SettingsOutlinedIcon />*/}
+                {/*</IconButton>*/}
+                {/*<IconButton>*/}
+                {/*    <PersonOutlinedIcon />*/}
+                {/*</IconButton>*/}
             </Box>
         </Box>
     );

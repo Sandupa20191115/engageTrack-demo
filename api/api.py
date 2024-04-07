@@ -9,6 +9,7 @@ from pymongo import MongoClient
 import uuid
 import time
 import random
+import os, shutil
 import matplotlib.pyplot as plt
 import os
 import keras
@@ -30,7 +31,6 @@ def cls():
 def clearExtractingFrames():
     # Removing files from Extracted_frames
     print("Cleaning Extracted Frames")
-    import os, shutil
     folder = "./Extracted Frames"
     for filename in os.listdir(folder):
         file_path = os.path.join(folder, filename)
@@ -87,7 +87,6 @@ def evaluateWebcam(id):
 
     response = {"Success": False}
 
-    clearExtractingFrames()
 
     # Extracting frames
     print("Extracting frames")
@@ -122,6 +121,16 @@ def evaluateWebcam(id):
         response = {"Success": False}
 
     finally:
+
+        # Delete the file specified by input_video_path
+        try:
+            os.remove(input_video_path)
+            print(f"File {input_video_path} deleted successfully")
+        except OSError as e:
+            print(f"Error deleting file {input_video_path}: {e}")
+
+        clearExtractingFrames()
+
         return response
 
 
@@ -153,7 +162,6 @@ def fileUpload():
                 return jsonify({'message': 'File type not allowed'}), 400
 
         # File is saved
-        clearExtractingFrames()
 
         # Extracting frames
         print("Extracting frames")
@@ -185,6 +193,16 @@ def fileUpload():
             response = jsonify({"Success": False, "Error": "Evaluation Failed", "data": None})
 
         finally:
+
+            # Delete the file specified by input_video_path
+            try:
+                os.remove(input_video_path)
+                print(f"File {input_video_path} deleted successfully")
+            except OSError as e:
+                print(f"Error deleting file {input_video_path}: {e}")
+
+            clearExtractingFrames()
+
             return response
 
         # return jsonify({"name": filename, "status": "success"})
