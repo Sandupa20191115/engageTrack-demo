@@ -138,7 +138,7 @@ const Sidebar = () => {
                         </Typography>
                         <Item
                             title="Evaluations"
-                            to="/team"
+                            to="/getEvaluations"
                             icon={<HistoryIcon />}
                             selected={selected}
                             setSelected={setSelected}

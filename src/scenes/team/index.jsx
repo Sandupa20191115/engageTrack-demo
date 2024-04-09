@@ -1,7 +1,9 @@
 import {
+    Alert,
     Box,
     IconButton,
     Paper,
+    Snackbar,
     Table,
     TableBody,
     TableCell,
@@ -22,7 +24,8 @@ import CloseIcon from '@mui/icons-material/Close';
 const Team = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-    const [data, setData] = useState([]);
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(false);
     const [evalArr, setEvalArr] = React.useState(
         [
             1.0,
@@ -37,22 +40,45 @@ const Team = () => {
             0.127578715391127908
         ]
     );
-    const [openModal, setOpenModal] = useState(false); // State for managing modal open state
     const [open, setOpen] = React.useState(false);
+
+    //snackbars
+    const [openSn, setOpenSn] = React.useState(false);
+    const [snackMsg, setSnackMsg] = React.useState("");
+    const [severity, setSeverity] = React.useState("success");
+
+    const openSnack = (msg, severity) => {
+        setSnackMsg(msg)
+        setOpenSn(true);
+        setSeverity(severity);
+    };
 
     useEffect(() => {
 
         const fetchData = async () => {
+            setLoading(true);
             try {
                 const response = await fetch("http://localhost:5000/getEvaluations");
                 if (!response.ok) {
                     throw new Error("Failed to fetch data");
                 }
                 const jsonData = await response.json();
-                setData(jsonData.users); // Set the "users" array to the data state
-                // console.log(jsonData.users); // Set the "users" array to the data state
+
+                if (jsonData.Success) {
+                    setData(jsonData.data);
+                    openSnack("Got evaluations", "success")
+                    if (data === []) {
+                        openSnack("There are no previous evaluations", "warning")
+                    }
+                } else {
+                    openSnack(jsonData.Error + ", Please try again", "warning");
+                }
+
             } catch (error) {
+                openSnack("Unknown Error Occurred" + " Please try again", "error")
                 console.error("Error fetching data:", error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -62,91 +88,93 @@ const Team = () => {
 
     const handleClose = () => setOpen(false);
 
-    const columns = [
-        {
-            field: "id",
-            headerName: "ID"
-        },
-        {
-            field: "type",
-            headerName: "Type",
-            flex: 1,
-        },
-        {
-            field: "scores",
-            headerName: "Options",
-            flex: 1,
-            renderCell: ({row}) => (
-                <Box>
-                    <CustomButton title={"Show Graph"} onClick={() => {
-                        setEvalArr(row.scores);
-                        setOpen(true);
-                    }}/>
-                </Box>
-            ),
-        },
-    ];
+    const sBHandleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSn(false);
+    };
 
     return (
         <Box m="20px">
             <Header title="Previous Evaluations"
                     subtitle="View previously evaluated focus levels"/>
 
-            <TableContainer component={Paper} style={{maxHeight: 600}}>
-                <Table stickyHeader aria-label="simple table">
-                    <TableHead style={{backgroundColor: "teal"}}>
-                        <TableRow>
-                            <TableCell style={{backgroundColor: "teal"}}>
-                                <Typography
-                                    variant="h4"
-                                    fontWeight="600"
-                                    color={colors.grey[100]}>
-                                    ID
-                                </Typography>
-                            </TableCell>
-                            <TableCell style={{backgroundColor: "teal"}}>
-                                <Typography
-                                    variant="h4"
-                                    fontWeight="600"
-                                    color={colors.grey[100]}
-                                >
-                                    Type
-                                </Typography>
-                            </TableCell>
-                            <TableCell align="right" sx={{pr: 7}} style={{backgroundColor: "teal"}}>
-                                <Typography
-                                    variant="h4"
-                                    fontWeight="600"
-                                    color={colors.grey[100]}
-                                >
-                                    Actions
-                                </Typography>
-                            </TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {data.map((row, index) => (
-                            <TableRow key={index}>
-                                <TableCell component="th" scope="row">
-                                    <Typography variant="h5">{row.id}</Typography>
-                                </TableCell>
-                                <TableCell>
-                                    <Typography variant="h5">{row.type}</Typography>
-                                </TableCell>
-                                <TableCell align="right">
-                                    <CustomButton
-                                        title={"Show Graph"}
-                                        onClick={() => {
-                                            setEvalArr(row.scores);
-                                            setOpen(true);
-                                        }}
-                                    />
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            {
+                loading ?
+                    <img src="./assets/vZjPLPGDTo.gif" alt="loader"
+                         style={{width: 50, height: 50}}/> :
+
+                    <TableContainer component={Paper} style={{maxHeight: 600}}>
+                        {data === null ?
+                            // <Box sx={{background : "transparent"}}>
+                            <Typography
+                                variant="h4"
+                                fontWeight="600"
+                                color={colors.redAccent[500]}
+                                background={"transparent"}
+                            >
+                                No Evaluations to show
+                            </Typography>
+                            // </Box>
+                            :
+                            <Table stickyHeader aria-label="simple table">
+                                <TableHead style={{backgroundColor: "teal"}}>
+                                    <TableRow>
+                                        <TableCell style={{backgroundColor: "teal"}}>
+                                            <Typography
+                                                variant="h4"
+                                                fontWeight="600"
+                                                color={colors.grey[100]}>
+                                                ID
+                                            </Typography>
+                                        </TableCell>
+                                        <TableCell style={{backgroundColor: "teal"}}>
+                                            <Typography
+                                                variant="h4"
+                                                fontWeight="600"
+                                                color={colors.grey[100]}
+                                            >
+                                                Type
+                                            </Typography>
+                                        </TableCell>
+                                        <TableCell align="right" sx={{pr: 7}} style={{backgroundColor: "teal"}}>
+                                            <Typography
+                                                variant="h4"
+                                                fontWeight="600"
+                                                color={colors.grey[100]}
+                                            >
+                                                Actions
+                                            </Typography>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {data.map((row, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell component="th" scope="row">
+                                                <Typography variant="h5">{row.id}</Typography>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Typography variant="h5">
+                                                    {row.type.charAt(0).toUpperCase() + row.type.slice(1)}
+                                                </Typography>
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                <CustomButton
+                                                    title={"Show Graph"}
+                                                    onClick={() => {
+                                                        setEvalArr(row.scores);
+                                                        setOpen(true);
+                                                    }}
+                                                />
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>}
+                    </TableContainer>
+            }
 
             <Modal
                 open={open}
@@ -195,6 +223,26 @@ const Team = () => {
                     {/*</Box>*/}
                 </Box>
             </Modal>
+
+            <Snackbar
+                open={openSn}
+                autoHideDuration={3000}
+                onClose={sBHandleClose}
+            >
+                <Alert
+                    onClose={sBHandleClose}
+                    severity={severity}
+                    variant="filled"
+                >
+                    <Typography
+                        variant="h6"
+                        fontWeight="600"
+                        color={colors.grey[100]}
+                    >
+                        {snackMsg}
+                    </Typography>
+                </Alert>
+            </Snackbar>
 
         </Box>
     );

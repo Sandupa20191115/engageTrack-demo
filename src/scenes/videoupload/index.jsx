@@ -22,7 +22,6 @@ const VideoUpload = () => {
     //evaluation
     //Array.from({ length: 50 }, () => Math.random())
     const [evalArr, setEvalArr] = React.useState(null); //null
-    const [evalValue, setEvalValue] = React.useState(-1);
     const [loading, setLoading] = React.useState(false); // State for API call loading
 
     //theme
@@ -43,7 +42,6 @@ const VideoUpload = () => {
     };
 
     const clearResults = () => {
-        setEvalValue(-1);
         setEvalArr(null);
         setSrc("");
     }
@@ -84,7 +82,6 @@ const VideoUpload = () => {
                 openSnack("Video Successfully Evaluated", "success");
                 setEvalArr(data.data);
                 console.log(data.data);
-                setEvalValue(data.value);
                 setLoading(false);
             } else {
                 openSnack(response.data.Error + ", Please try again", "warning");
@@ -221,7 +218,7 @@ const VideoUpload = () => {
                     gridRow="span 2"
                 >
 
-                    {src !== "" ? <video src={src} controls height={"100%"} style={{margin:"30 50"}}>
+                    {src !== "" ? <video src={src} controls height={"95%"} style={{margin:"30 50"}}>
                         Sorry, your browser doesn't support embedded videos.
                     </video> : <Typography
                         variant="h5"
@@ -234,14 +231,13 @@ const VideoUpload = () => {
                 <Box
                     gridColumn="span 8"
                     gridRow="span 2"
+                    padding={"30px"}
                     backgroundColor={colors.primary[400]}
                 >
                     <Box
-                        mt="25px"
-                        p="0 30px"
-                        display="flex "
+                        display="flex"
                         justifyContent="space-between"
-                        alignItems="center"
+                        // alignItems="center"
                     >
                         <Typography
                             variant="h3"
@@ -252,38 +248,29 @@ const VideoUpload = () => {
                         </Typography>
 
                         {
-                            evalValue === -1 ?
+                            evalArr === null ?
                                 <></> :
-                                <Box display="flex"
-                                     alignItems="center"
-                                     justifyContent="center">
-                                    <Typography
-                                        variant="h4"
-                                        fontWeight="bold"
-                                        color={colors.greenAccent[500]}
-                                    >
-                                        {evalValue === 1 ? "Engaged" : "Disengaged"}
-                                    </Typography>
-                                    <CustomButton title={"Clear"} onClick={() => clearResults()}/>
-                                </Box>
+                                // <Box display="flex"
+                                //      alignItems="center"
+                                //      justifyContent="center">
+                                    <CustomButton title={"Clear"} style={{margin : 0}} onClick={() => clearResults()}/>
+                                // </Box>
                         }
 
                     </Box>
 
-                    {evalArr === null
+                    {evalArr == null
                         ? <Box display="flex"
                                alignItems="center"
-                               justifyContent="center"
-                                >
+                               justifyContent="center">
                             <Typography
                                 variant="h4"
                                 color={colors.grey[500]}
-                                sx={{paddingTop: 5}}
                             >
                                 Evaluation graph will appear here
                             </Typography>
                         </Box>
-                        : <Box height="250px" sx={{pl:5,pt:-1}}>
+                        : <Box height="250px" m="-25px 0 0 40px">
                             {/*<LineChart isDashboard={true}/>*/}
                             <LineChartCustom
                                 isCustomLineColors={true}

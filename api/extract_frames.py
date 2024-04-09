@@ -21,7 +21,7 @@ def extract_frames(input_video_path, output_folder_path):
         ret, frame = cap.read()
 
         if not ret:
-            print("COULD NOT READ FRAMES")
+            # print("COULD NOT READ FRAMES")
             success = False
             break
 

@@ -75,7 +75,7 @@ def testDB_get():
     for user in list(users.find({}, {'_id': False})):
         user_objects.append(user)
 
-    return {'users': user_objects}
+    return jsonify({"Success": True, "Error": None, "data": user_objects})
 
 
 @app.route("/evaluate/<id>")
