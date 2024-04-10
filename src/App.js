@@ -15,6 +15,7 @@ import VideoUpload from "./scenes/videoupload";
 import { useNavigate } from "react-router-dom";
 // import Calendar from "./scenes/calendar/calendar";
 
+//both functions Working fine
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
