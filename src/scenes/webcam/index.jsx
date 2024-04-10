@@ -29,7 +29,6 @@ const WebcamView = () => {
 
     //evaluation
     const [evalArr, setEvalArr] = React.useState(null);
-    const [evalValue, setEvalValue] = React.useState(-1);
     const [loading, setLoading] = React.useState(false); // State for API call loading
 
     //Allows straight download without button click
@@ -75,7 +74,7 @@ const WebcamView = () => {
     );
 
     const handleStopCaptureClick = React.useCallback(() => {
-        // setShowWebcam(false);
+        setShowWc(false);
         setLoading(true);
         mediaRecorderRef.current.stop();
         setCapturing(false);
@@ -147,7 +146,6 @@ const WebcamView = () => {
     };
 
     const clearResults = () => {
-        setEvalValue(-1);
         setEvalArr(null);
     }
 
@@ -208,7 +206,7 @@ const WebcamView = () => {
                                                   onClick={() => handleStartCaptureClick()}/>
 
                                     <CustomButton title={"Stop Capturing and Evaluate"}
-                                                  disable={!showWc}
+                                                  disable={!showWc || !capturing}
                                                   onClick={() => handleStopCaptureClick()}/>
                                     {
                                         showWc ?
@@ -246,18 +244,11 @@ const WebcamView = () => {
                         </Typography>
 
                         {
-                            evalValue === -1 ?
+                            evalArr === null ?
                                 <></> :
                                 <Box display="flex"
                                      alignItems="center"
                                      justifyContent="center">
-                                    <Typography
-                                        variant="h4"
-                                        fontWeight="bold"
-                                        color={colors.greenAccent[500]}
-                                    >
-                                        {evalValue === 1 ? "Engaged" : "Disengaged"}
-                                    </Typography>
                                     <CustomButton title={"Clear"} onClick={() => clearResults()}/>
                                 </Box>
                         }
@@ -274,7 +265,7 @@ const WebcamView = () => {
                                 Evaluation graph will appear here
                             </Typography>
                         </Box>
-                        : <Box height="250px" m="-0px 0 0 40px">
+                        : <Box height="250px" m="-35px 0 0 40px">
                             {/*<LineChart isDashboard={true}/>*/}
                             <LineChartCustom
                                 isCustomLineColors={true}
